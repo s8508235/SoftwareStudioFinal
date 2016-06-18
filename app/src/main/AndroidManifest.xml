@@ -20,6 +20,21 @@
             android:label="@string/title_activity_settings"
             android:parentActivityName=".MainActivity" >
         </activity>
+        <activity
+            android:name=".DetailActivity"
+            android:label="@string/title_activity_detail"
+            android:parentActivityName=".MainActivity" >
+        </activity>
+        <activity
+            android:name=".TeamActivity"
+            android:label="@string/title_activity_teams"
+            android:parentActivityName=".MainActivity" >
+        </activity>
+        <activity
+            android:name=".SoloActivity"
+            android:label="@string/title_activity_solo"
+            android:parentActivityName=".MainActivity" >
+        </activity>
     </application>
 
 </manifest>

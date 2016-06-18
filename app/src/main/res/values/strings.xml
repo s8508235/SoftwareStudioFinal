@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">FinalProject</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_teams">Teams</string>
+    <string name="title_activity_detail">Details</string>
+    <string name="title_activity_solo">Solo</string>
     <string name="action_settings">Settings</string>
     <string name="pref_mode_key" translatable="false">mode</string>
     <string name="pref_mode_label">Mode</string>
@@ -7,5 +11,6 @@
     <string name="pref_mode_solo" translatable="false">solo</string>
     <string name="pref_mode_label_team">Team</string>
     <string name="pref_mode_label_solo">Solo</string>
-    <string name="title_activity_settings">Settings</string>
+    <string name="list_team">Team</string>
+
 </resources>
