@@ -4,6 +4,9 @@
     <string name="title_activity_teams">Teams</string>
     <string name="title_activity_detail">Details</string>
     <string name="title_activity_solo">Solo</string>
+    <string name="title_activity_update_game">Update Game</string>
+    <string name="title_activity_game_data">Game Data</string>
+    <string name="title_activity_update_team">Update Team</string>
     <string name="action_settings">Settings</string>
     <string name="pref_mode_key" translatable="false">mode</string>
     <string name="pref_mode_label">Mode</string>

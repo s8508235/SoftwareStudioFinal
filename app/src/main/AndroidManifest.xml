@@ -23,7 +23,7 @@
         <activity
             android:name=".TeamDetailActivity"
             android:label="@string/title_activity_detail"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".TeamActivity" >
         </activity>
         <activity
             android:name=".TeamActivity"
@@ -31,9 +31,24 @@
             android:parentActivityName=".MainActivity" >
         </activity>
         <activity
+            android:name=".UpdateTeamDetailActivity"
+            android:label="@string/title_activity_update_team"
+            android:parentActivityName=".TeamActivity">
+        </activity>
+        <activity
             android:name=".SoloActivity"
             android:label="@string/title_activity_solo"
             android:parentActivityName=".MainActivity" >
+        </activity>
+        <activity
+            android:name=".UpdateGameActivity"
+            android:label="@string/title_activity_update_game"
+            android:parentActivityName=".TeamActivity">
+        </activity>
+        <activity
+            android:name=".GameDataActivity"
+            android:label="@string/title_activity_game_data"
+            android:parentActivityName=".UpdateGameActivity">
         </activity>
     </application>
 

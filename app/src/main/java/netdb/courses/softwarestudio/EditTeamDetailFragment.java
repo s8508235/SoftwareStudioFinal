@@ -71,8 +71,8 @@ public class EditTeamDetailFragment extends Fragment {
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(getContext(),"btn1 Success",Toast.LENGTH_LONG);
-                    Intent intent = new Intent(getActivity(), TeamActivity.class);
+                    Toast.makeText(getContext(),"Go to edit",Toast.LENGTH_LONG);
+                    Intent intent = new Intent(getActivity(), UpdateTeamDetailActivity.class);
                     startActivity(intent);
                 }
             });
