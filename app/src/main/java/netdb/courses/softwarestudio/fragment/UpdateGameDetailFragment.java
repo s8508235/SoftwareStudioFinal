@@ -1,4 +1,4 @@
-package netdb.courses.softwarestudio;
+package netdb.courses.softwarestudio.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,13 +18,15 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import netdb.courses.softwarestudio.GameDataActivity;
+import netdb.courses.softwarestudio.R;
+
 /**
  * Created by Bill on 2016/6/19.
  */
 public class UpdateGameDetailFragment extends Fragment {
     private String teamA, teamB;
     private ListView listViewA, listViewB;
-    private String mTeamDetailStr;
     private mAdapter adapterA, adapterB;
     List<String> dataList = new ArrayList<String>();
 

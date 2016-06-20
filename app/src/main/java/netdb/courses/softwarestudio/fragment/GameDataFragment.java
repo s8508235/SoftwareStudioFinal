@@ -1,4 +1,4 @@
-package netdb.courses.softwarestudio;
+package netdb.courses.softwarestudio.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,6 +14,8 @@ import android.widget.TextView;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+
+import netdb.courses.softwarestudio.R;
 
 /**
  * Created by Bill on 2016/6/19.

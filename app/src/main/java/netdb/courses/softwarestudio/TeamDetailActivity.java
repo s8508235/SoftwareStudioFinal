@@ -2,10 +2,12 @@ package netdb.courses.softwarestudio;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
+
+import netdb.courses.softwarestudio.fragment.EditGameDetailFragment;
+import netdb.courses.softwarestudio.fragment.EditTeamDetailFragment;
+import netdb.courses.softwarestudio.fragment.SetGameDetailFragment;
+import netdb.courses.softwarestudio.fragment.SetTeamDetailFragment;
 
 /**
  * Created by Bill on 2016/6/18.

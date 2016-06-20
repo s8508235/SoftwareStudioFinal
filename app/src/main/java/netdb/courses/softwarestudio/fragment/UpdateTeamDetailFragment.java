@@ -1,9 +1,8 @@
-package netdb.courses.softwarestudio;
+package netdb.courses.softwarestudio.fragment;
 
+import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.TextViewCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -14,65 +13,47 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import netdb.courses.softwarestudio.R;
+import netdb.courses.softwarestudio.TeamActivity;
+
 /**
  * Created by Bill on 2016/6/19.
  */
-public class SetTeamDetailFragment extends Fragment {
-
+public class UpdateTeamDetailFragment extends Fragment{
     private ListView listView;
-    private String mTeamDetailStr;
     private mAdapter adapter;
     List<String> dataList = new ArrayList<String>();
     List<String> playerList = new ArrayList<String>();
     HashMap<Integer, String> hashMap = new HashMap<Integer, String>();
 
-    public SetTeamDetailFragment() {
+    public UpdateTeamDetailFragment() {
         setHasOptionsMenu(false);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getActivity().setTitle("建立隊伍");
+        getActivity().setTitle("修改隊伍");
         addData();
-        View rootView = inflater.inflate(R.layout.fragment_set_team_detail, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_update_team_detail, container, false);
 
-        Button btn = (Button) rootView.findViewById(R.id.set_team_button);
+        Button btn = (Button) rootView.findViewById(R.id.update_team_button);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(),"Add Success",Toast.LENGTH_LONG);
                 Intent intent = new Intent(getActivity(), TeamActivity.class);
                 startActivity(intent);
             }
         });
 
-        listView = (ListView) rootView.findViewById(R.id.set_team_listView);
+        listView = (ListView) rootView.findViewById(R.id.update_team_listView);
         adapter = new mAdapter();
         listView.setAdapter(adapter);
-
-
-        /*
-        if(mTeamDetailStr.equals("1"))
-        {
-            rootView = inflater.inflate(R.layout.fragment_edit_team_detail, container, false);
-        }
-        else if(mTeamDetailStr.equals("2"))
-        {
-            rootView = inflater.inflate(R.layout.fragment_set_game_detail, container, false);
-        }
-        else if(mTeamDetailStr.equals("3"))
-        {
-            rootView = inflater.inflate(R.layout.fragment_edit_game_detail, container, false);
-        }*/
-        // The detail Activity called via intent.  Inspect the intent for forecast data.
-
         return rootView;
     }
 
@@ -83,7 +64,7 @@ public class SetTeamDetailFragment extends Fragment {
         playerList.add("player2:");
     }
 
-    class mAdapter extends BaseAdapter{
+    class mAdapter extends BaseAdapter {
 
         @Override
         public int getCount(){

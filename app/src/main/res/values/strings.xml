@@ -16,4 +16,5 @@
     <string name="pref_mode_label_solo">Solo</string>
     <string name="list_team">Team</string>
     <string name="submit">送出</string>
+    <string name="plusColumn">+</string>
 </resources>

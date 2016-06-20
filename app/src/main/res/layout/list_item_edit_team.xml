@@ -18,12 +18,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="編輯"
+        android:layout_gravity="left|center_vertical"
         android:id="@+id/list_item_edit_team_button1" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="刪除"
+        android:layout_gravity="left|center_vertical"
+        android:layout_alignLeft="@+id/list_item_edit_team"
         android:id="@+id/list_item_edit_team_button2" />
 
 
