@@ -17,4 +17,6 @@
     <string name="list_team">Team</string>
     <string name="submit">送出</string>
     <string name="plusColumn">+</string>
+    <string name="remind_login">Please log in!</string>
+    <string name="facebook_app_id">295899927420216</string>
 </resources>
