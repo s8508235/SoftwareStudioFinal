@@ -37,7 +37,7 @@ public class SetGameDetailFragment extends Fragment{
 
         ViewPager top_viewpager = (ViewPager) rootView.findViewById(R.id.top_viewpager);
         CircleIndicator top_indicator = (CircleIndicator) rootView.findViewById(R.id.top_indicator);
-        mtopAdapter = new SamplePagerAdapter(team_num) {
+        mtopAdapter = new SamplePagerAdapter(0) {
             @Override public int getItemPosition(Object object) {
                 return POSITION_NONE;
             }
