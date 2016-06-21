@@ -1,6 +1,9 @@
 apply plugin: 'com.android.application'
 
 android {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
     compileSdkVersion 24
     buildToolsVersion "24.0.0"
     defaultConfig {
