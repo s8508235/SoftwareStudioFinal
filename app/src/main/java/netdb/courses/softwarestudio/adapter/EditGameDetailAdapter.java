@@ -32,11 +32,13 @@ public class EditGameDetailAdapter extends CursorAdapter {
     public static class ViewHolder {
 
         public final TextView dateView;
+        public final TextView gameDetailView;
         public final Button editButton;
         public final Button deletButton;
 
         public ViewHolder(View view) {
             dateView = (TextView) view.findViewById(R.id.list_item_edit_team_textView);
+            gameDetailView = (TextView) view.findViewById(R.id.list_item_edit_score_textView);
             editButton = (Button) view.findViewById(R.id.list_item_edit_team_button1);
             deletButton = (Button) view.findViewById(R.id.list_item_edit_team_button2);
         }
@@ -57,15 +59,40 @@ public class EditGameDetailAdapter extends CursorAdapter {
     public void bindView(View view, Context context, final Cursor cursor) {
         final ViewHolder viewHolder = (ViewHolder) view.getTag();
 
+        String teamA, teamB;
+        Cursor tmp = context.getContentResolver().query(
+                TeamContract.TeamEntry.CONTENT_URI,
+                null,
+                TeamContract.TeamEntry.TABLE_NAME + "." + TeamContract.TeamEntry._ID + " = ?",
+                new String[]{cursor.getString(cursor.getColumnIndex(TeamContract.GameEntry.COLUMN_TEAMA))}, null
+        );
+        tmp.moveToFirst();
+        teamA = tmp.getString(tmp.getColumnIndex(TeamContract.TeamEntry.COLUMN_TEAM_NAME));
+        tmp = context.getContentResolver().query(
+                TeamContract.TeamEntry.CONTENT_URI,
+                null,
+                TeamContract.TeamEntry.TABLE_NAME + "." + TeamContract.TeamEntry._ID + " = ?",
+                new String[]{cursor.getString(cursor.getColumnIndex(TeamContract.GameEntry.COLUMN_TEAMB))}, null
+        );
+        tmp.moveToFirst();
+        teamB = tmp.getString(tmp.getColumnIndex(TeamContract.TeamEntry.COLUMN_TEAM_NAME));
+        tmp.close();
         // Read date from cursor
-        String game = cursor.getString(cursor.getColumnIndex(TeamContract.GameEntry.COLUMN_NAME));
+        final String game = cursor.getString(cursor.getColumnIndex(TeamContract.GameEntry.COLUMN_NAME));
+
+        final String gameDetail =
+                "  " + teamA + " : " +
+                cursor.getString(cursor.getColumnIndex(TeamContract.GameEntry.COLUMN_TEAMA_SCORE)) + " | " +
+                cursor.getString(cursor.getColumnIndex(TeamContract.GameEntry.COLUMN_TEAMB_SCORE)) + " : " +
+                teamB;
         // Find TextView and set formatted date on it
         viewHolder.dateView.setText(game);
-
+        viewHolder.gameDetailView.setText(gameDetail);
         viewHolder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mcontext, UpdateGameActivity.class);
+                intent.putExtra("game", game);
                 mcontext.startActivity(intent);
             }
         });

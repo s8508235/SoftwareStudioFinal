@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/contain"
+    android:id="@+id/contain" android:background="@color/light_orange"
     tools:context=".UpdateTeamDetailActivity"
     tools:ignore="MergeRootFrame">
 

@@ -30,7 +30,7 @@
                     android:id="@+id/tab1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#ffc916"
+                    android:background="#fac9a9"
                     android:orientation="vertical">
 
                     <ListView
@@ -44,7 +44,7 @@
                     android:id="@+id/tab2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#da8200"
+                    android:background="#b99a9a"
                     android:orientation="vertical">
 
                     <ListView

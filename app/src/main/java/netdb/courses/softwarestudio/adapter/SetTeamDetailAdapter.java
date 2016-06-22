@@ -26,9 +26,11 @@ public class SetTeamDetailAdapter extends BaseAdapter {
 
     public List<String> dataList = new ArrayList<String>();
     public List<String> playerList = new ArrayList<String>();
+    public List<String> numberList = new ArrayList<String>();
 
-    private int index;
+    private int index, nindex;
     private static HashMap<Integer, String> hashMap = new HashMap<Integer, String>();
+    private static HashMap<Integer, String> numhashMap = new HashMap<Integer, String>();
     private Activity mActivity;
     ViewHolder viewholder;
 
@@ -36,20 +38,19 @@ public class SetTeamDetailAdapter extends BaseAdapter {
         mActivity = activity;
         addData();
         hashMap.clear();
-    }
-
-    public int numberOfData(){
-        return dataList.size();
+        numhashMap.clear();
     }
 
     public static class ViewHolder {
 
         public final TextView textview;
         public final EditText editText;
+        public final EditText numberText;
 
         public ViewHolder(View view) {
             textview = (TextView) view.findViewById(R.id.set_team_textView);
             editText = (EditText) view.findViewById(R.id.set_team_editText);
+            numberText = (EditText) view.findViewById(R.id.set_team_numberText);
         }
     }
 
@@ -59,8 +60,10 @@ public class SetTeamDetailAdapter extends BaseAdapter {
 
     private void addData(){
         dataList.clear();
+        numberList.clear();
         playerList.clear();
-        dataList.add("GGG");
+        dataList.add("TEST");
+        numberList.add("請輸入背號");
         playerList.add("隊伍名稱:");
     }
     @Override
@@ -83,6 +86,8 @@ public class SetTeamDetailAdapter extends BaseAdapter {
 
         String str = dataList.get(position);
         String pstr = playerList.get(position);
+        String nstr = numberList.get(position);
+
         convertView = LayoutInflater.from(mActivity.getApplication())
                 .inflate(R.layout.list_item_set_team,null);
 
@@ -95,6 +100,15 @@ public class SetTeamDetailAdapter extends BaseAdapter {
 
         viewholder.editText.setText(str);
         viewholder.textview.setText(pstr);
+        viewholder.numberText.setText(nstr);
+
+        numberList.set(position, nstr);
+        dataList.set(position, str);
+
+        if(position == 0)
+            viewholder.numberText.setFocusable(false);
+        else
+            viewholder.numberText.setFocusable(true);
 
         viewholder.editText.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -105,17 +119,20 @@ public class SetTeamDetailAdapter extends BaseAdapter {
             }
         });
 
+        viewholder.numberText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if(motionEvent.getAction() == MotionEvent.ACTION_UP)
+                    nindex = position;
+                return false;
+            }
+        });
+
         viewholder.editText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
             @Override
             public void afterTextChanged(Editable editable) {
                 hashMap.put(position, editable.toString());
@@ -123,15 +140,39 @@ public class SetTeamDetailAdapter extends BaseAdapter {
             }
         });
 
+        viewholder.numberText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                numhashMap.put(position, editable.toString());
+                numberList.set(position, editable.toString());
+            }
+        });
+
         if(hashMap.get(position)!=null){
             viewholder.editText.setText(hashMap.get(position));
+            dataList.set(position, hashMap.get(position));
+        }
+        if(numhashMap.get(position)!=null){
+            viewholder.numberText.setText(numhashMap.get(position));
+            numberList.set(position, numhashMap.get(position));
         }
 
+        viewholder.numberText.clearFocus();
         viewholder.editText.clearFocus();
+
+        if(nindex != -1 && nindex == position){
+            viewholder.numberText.requestFocus();
+        }
+
         if(index != -1 && index == position){
             viewholder.editText.requestFocus();
         }
-
         return convertView;
     }
 }

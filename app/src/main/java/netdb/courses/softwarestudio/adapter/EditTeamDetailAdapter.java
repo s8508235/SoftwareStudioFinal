@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import netdb.courses.softwarestudio.R;
 import netdb.courses.softwarestudio.UpdateGameActivity;
+import netdb.courses.softwarestudio.UpdateTeamDetailActivity;
 import netdb.courses.softwarestudio.data.TeamContract;
 
 /**
@@ -65,7 +66,21 @@ public class EditTeamDetailAdapter extends CursorAdapter {
         viewHolder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mcontext, UpdateGameActivity.class);
+                String selection = TeamContract.TeamEntry.TABLE_NAME +
+                        "." + TeamContract.TeamEntry.COLUMN_TEAM_NAME + " = ? ";
+
+                Cursor teamCursor = mcontext.getContentResolver().query(TeamContract.TeamEntry.CONTENT_URI,
+                        null,
+                        selection,
+                        new String[]{viewHolder.dateView.getText().toString()},
+                        null
+                );
+                teamCursor.moveToFirst();
+
+                Intent intent = new Intent(mcontext, UpdateTeamDetailActivity.class);
+                intent.putExtra("team",teamCursor.getString(teamCursor.getColumnIndex(TeamContract.TeamEntry.COLUMN_TEAM_NAME)));
+                intent.putExtra("number", teamCursor.getString(teamCursor.getColumnIndex(TeamContract.TeamEntry.COLUMN_TEAM_NUM)));
+                intent.putExtra("id", teamCursor.getString(teamCursor.getColumnIndex(TeamContract.TeamEntry._ID)));
                 mcontext.startActivity(intent);
             }
         });
@@ -89,10 +104,42 @@ public class EditTeamDetailAdapter extends CursorAdapter {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 notifyDataSetChanged();
-                                String selection = TeamContract.TeamEntry.TABLE_NAME+
+                                String selection = TeamContract.TeamEntry.TABLE_NAME +
                                         "." + TeamContract.TeamEntry.COLUMN_TEAM_NAME + " = ? ";
+
+                                Cursor teamCursor = mcontext.getContentResolver().query(TeamContract.TeamEntry.CONTENT_URI,
+                                        null,
+                                        selection,
+                                        new String[]{viewHolder.dateView.getText().toString()},
+                                        null
+                                );
+                                teamCursor.moveToFirst();
+
                                 mcontext.getContentResolver().delete(TeamContract.TeamEntry.CONTENT_URI, selection,
                                         new String[]{viewHolder.dateView.getText().toString()});
+
+                                selection = TeamContract.PlayerEntry.TABLE_NAME +
+                                        "." + TeamContract.PlayerEntry.COLUMN_TEAM_ID + " = ?";
+
+                                Cursor playerCursor = mcontext.getContentResolver().query(TeamContract.PlayerEntry.CONTENT_URI,
+                                        null,
+                                        selection,
+                                        new String[]{teamCursor.getString(teamCursor.getColumnIndex(TeamContract.TeamEntry._ID))},
+                                        null
+                                );
+                                playerCursor.moveToFirst();
+
+                                mcontext.getContentResolver().delete(TeamContract.PlayerEntry.CONTENT_URI, selection,
+                                        new String[]{teamCursor.getString(teamCursor.getColumnIndex(TeamContract.TeamEntry._ID))});
+
+                                selection = TeamContract.GameDataEntry.TABLE_NAME +
+                                        "." + TeamContract.GameDataEntry._ID + " = ?";
+                                do {
+                                    int id = playerCursor.getColumnIndex(TeamContract.PlayerEntry.COLUMN_PLAYER_DATA_ID);
+                                    if(id < 0) break;
+                                    mcontext.getContentResolver().delete(TeamContract.GameDataEntry.CONTENT_URI, selection,
+                                            new String[]{playerCursor.getString(id)});
+                                }while (playerCursor.moveToNext());
                                 Toast.makeText(mcontext, "Delete successful", Toast.LENGTH_SHORT).show();
                             }
                         })

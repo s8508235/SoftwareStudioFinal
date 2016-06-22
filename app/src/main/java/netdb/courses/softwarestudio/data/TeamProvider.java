@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.util.Log;
 
 public class TeamProvider extends ContentProvider {
     // The URI Matcher used by this content provider.
@@ -21,12 +20,14 @@ public class TeamProvider extends ContentProvider {
     static final int GAME = 300;
     static final int TEAM = 400;
     static final int TEAM_ONE = 401;
+    static final int GAME_DATA = 500;
+    static final int GAME_PLAYER = 600;
 
     private static final SQLiteQueryBuilder sTeamQueryBuilder;
 
     static{
         sTeamQueryBuilder = new SQLiteQueryBuilder();
-
+/*
         //This is an inner join which looks like
         //weather INNER JOIN location ON weather.location_id = location._id
         sTeamQueryBuilder.setTables(
@@ -43,6 +44,35 @@ public class TeamProvider extends ContentProvider {
                         "." + TeamContract.GameEntry.COLUMN_TEAMB +
                         " = " + TeamContract.TeamEntry.TABLE_NAME +
                         "." + TeamContract.TeamEntry._ID);
+
+        sTeamQueryBuilder.setTables(
+                TeamContract.PlayerEntry.TABLE_NAME + " INNER JOIN " +
+                        TeamContract.TeamEntry.TABLE_NAME +
+                        " ON " + TeamContract.PlayerEntry.TABLE_NAME +
+                        "." + TeamContract.PlayerEntry.COLUMN_TEAM_ID +
+                        " = " + TeamContract.TeamEntry.TABLE_NAME +
+                        "." + TeamContract.TeamEntry._ID);
+        sTeamQueryBuilder.setTables(
+                TeamContract.PlayerEntry.TABLE_NAME + " INNER JOIN " +
+                        TeamContract.GameDataEntry.TABLE_NAME +
+                        " ON " + TeamContract.PlayerEntry.TABLE_NAME +
+                        "." + TeamContract.PlayerEntry.COLUMN_PLAYER_DATA_ID +
+                        " = " + TeamContract.GameDataEntry.TABLE_NAME +
+                        "." + TeamContract.GameDataEntry._ID);
+        sTeamQueryBuilder.setTables(
+                TeamContract.GamePlayerEntry.TABLE_NAME + " INNER JOIN " +
+                        TeamContract.GameDataEntry.TABLE_NAME +
+                        " ON " + TeamContract.GamePlayerEntry.TABLE_NAME +
+                        "." + TeamContract.GamePlayerEntry.COLUMN_PLAYER_DATA_ID +
+                        " = " + TeamContract.GameDataEntry.TABLE_NAME +
+                        "." + TeamContract.GameDataEntry._ID);
+        sTeamQueryBuilder.setTables(
+                TeamContract.GamePlayerEntry.TABLE_NAME + " INNER JOIN " +
+                        TeamContract.GameEntry.TABLE_NAME +
+                        " ON " + TeamContract.GamePlayerEntry.TABLE_NAME +
+                        "." + TeamContract.GamePlayerEntry.COLUMN_GAME_ID +
+                        " = " + TeamContract.GameEntry.TABLE_NAME +
+                        "." + TeamContract.GameEntry._ID);*/
     }
 
     //location.location_setting = ?
@@ -129,8 +159,9 @@ public class TeamProvider extends ContentProvider {
         matcher.addURI(authority, TeamContract.PATH_TEAM + "/#", TEAM_ONE);
         matcher.addURI(authority, TeamContract.PATH_TEAM + "/*", TEAM_PLAYER);
         matcher.addURI(authority, TeamContract.PATH_GAME, GAME);
-
-        matcher.addURI(authority, TeamContract.PATH_PLAYER + "/#" , PLAYER);
+        matcher.addURI(authority, TeamContract.PATH_GAME_DATA, GAME_DATA);
+        matcher.addURI(authority, TeamContract.PATH_GAME_PLAYER,GAME_PLAYER);
+        matcher.addURI(authority, TeamContract.PATH_PLAYER, PLAYER);
         matcher.addURI(authority, TeamContract.PATH_GAME + "/#", GAME_TEAM_PLAYER);
 
         return matcher;
@@ -167,6 +198,10 @@ public class TeamProvider extends ContentProvider {
                 return TeamContract.TeamEntry.CONTENT_TYPE;
             case GAME:
                 return TeamContract.GameEntry.CONTENT_TYPE;
+            case GAME_DATA:
+                return TeamContract.GameDataEntry.CONTENT_TYPE;
+            case GAME_PLAYER:
+                return TeamContract.GamePlayerEntry.CONTENT_TYPE;
             case GAME_TEAM_PLAYER:
                 return TeamContract.GameEntry.CONTENT_ITEM_TYPE;
             case PLAYER:
@@ -186,7 +221,15 @@ public class TeamProvider extends ContentProvider {
             // "weather/*/*"
             case PLAYER:
             {
-                retCursor = getPlayer(uri, projection, sortOrder);
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        TeamContract.PlayerEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
                 break;
             }
             // "weather/*"
@@ -214,6 +257,30 @@ public class TeamProvider extends ContentProvider {
             case GAME:{
                 retCursor = mOpenHelper.getReadableDatabase().query(
                         TeamContract.GameEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
+            case GAME_DATA:{
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        TeamContract.GameDataEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
+            case GAME_PLAYER:{
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        TeamContract.GamePlayerEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -265,6 +332,22 @@ public class TeamProvider extends ContentProvider {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
             }
+            case GAME_DATA:{
+                long _id = db.insert(TeamContract.GameDataEntry.TABLE_NAME, null, values);
+                if ( _id > 0 )
+                    returnUri = TeamContract.GameDataEntry.buildGameDataUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
+            case GAME_PLAYER:{
+                long _id = db.insert(TeamContract.GamePlayerEntry.TABLE_NAME, null, values);
+                if ( _id > 0 )
+                    returnUri = TeamContract.GamePlayerEntry.buildGamePlayerUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -291,6 +374,14 @@ public class TeamProvider extends ContentProvider {
             case PLAYER:
                 rowsDeleted = db.delete(
                         TeamContract.PlayerEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            case GAME_DATA:
+                rowsDeleted = db.delete(
+                        TeamContract.GameDataEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            case GAME_PLAYER:
+                rowsDeleted = db.delete(
+                        TeamContract.GamePlayerEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -331,6 +422,14 @@ public class TeamProvider extends ContentProvider {
                 rowsUpdated = db.update(TeamContract.PlayerEntry.TABLE_NAME, values, selection,
                         selectionArgs);
                 break;
+            case GAME_DATA:
+                rowsUpdated = db.update(TeamContract.GameDataEntry.TABLE_NAME, values, selection,
+                        selectionArgs);
+                break;
+            case GAME_PLAYER:
+                rowsUpdated = db.update(TeamContract.GamePlayerEntry.TABLE_NAME, values, selection,
+                        selectionArgs);
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -339,19 +438,18 @@ public class TeamProvider extends ContentProvider {
         }
         return rowsUpdated;
     }
-/*
+
     @Override
     public int bulkInsert(Uri uri, ContentValues[] values) {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
         switch (match) {
-            case TEAM:
+            case PLAYER:
                 db.beginTransaction();
                 int returnCount = 0;
                 try {
                     for (ContentValues value : values) {
-                        normalizeDate(value);
-                        long _id = db.insert(WeatherContract.WeatherEntry.TABLE_NAME, null, value);
+                        long _id = db.insert(TeamContract.PlayerEntry.TABLE_NAME, null, value);
                         if (_id != -1) {
                             returnCount++;
                         }
@@ -365,7 +463,7 @@ public class TeamProvider extends ContentProvider {
             default:
                 return super.bulkInsert(uri, values);
         }
-    }*/
+    }
 
     // You do not need to call this method. This is a method specifically to assist the testing
     // framework in running smoothly. You can read more at:

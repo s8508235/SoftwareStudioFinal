@@ -79,37 +79,26 @@ public class MainFragment extends Fragment {
 
     public void btnlistener()
     {
-        if(isLoggedIn() == true) {
-            btn1.setOnClickListener(new Button.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), TeamActivity.class);
-                    startActivity(intent);
-                }
-            });
+        btn1.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), TeamActivity.class);
+                startActivity(intent);
+            }
+        });
+
             btn2.setOnClickListener(new Button.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), SoloActivity.class);
-                    startActivity(intent);
+                    if(isLoggedIn() == true) {
+                        Intent intent = new Intent(getActivity(), SoloActivity.class);
+                        startActivity(intent);
+                    }else{
+                        Toast.makeText(getContext(),R.string.remind_login,Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
-        }
-        else
-        {
-            btn1.setOnClickListener(new Button.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getContext(),R.string.remind_login,Toast.LENGTH_SHORT).show();
-                }
-            });
-            btn2.setOnClickListener(new Button.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getContext(),R.string.remind_login,Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
+
     }
     @Override
     public void onViewCreated(View view,Bundle savedInstanceState)

@@ -31,6 +31,7 @@ import java.util.Random;
 
 import me.relex.circleindicator.CircleIndicator;
 import netdb.courses.softwarestudio.R;
+import netdb.courses.softwarestudio.TeamActivity;
 import netdb.courses.softwarestudio.adapter.SetGameDetailAdapter;
 import netdb.courses.softwarestudio.data.TeamContract;
 
@@ -174,30 +175,16 @@ public class SetGameDetailFragment extends Fragment{
                                 values.put(TeamContract.GameEntry.COLUMN_TEAMB_SCORE, 0);
                                 values.put(TeamContract.GameEntry.COLUMN_WINNER, 0);
 
-
                                 Uri _id = getContext().getContentResolver().insert(TeamContract.GameEntry.CONTENT_URI, values);
+
                                 Toast.makeText(getContext(),"Set Game Success", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getContext(), TeamActivity.class);
+                                startActivity(intent);
                             }
                         }
                     })
                     .show();
-            /*
-            Toast.makeText(getContext(),"Set Game Success", Toast.LENGTH_SHORT).show();
-            ContentValues values = new ContentValues();
 
-            values.put(TeamContract.GameEntry.COLUMN_NAME, gameName);
-            values.put(TeamContract.GameEntry.COLUMN_TEAMA, mtopAdapter.getCursor().getString(
-                    mtopAdapter.getCursor().getColumnIndex(TeamContract.TeamEntry.COLUMN_TEAM_NAME)));
-            values.put(TeamContract.GameEntry.COLUMN_TEAMA_SCORE, 0);
-            values.put(TeamContract.GameEntry.COLUMN_TEAMB, mbotAdapter.getCursor().getString(
-                    mbotAdapter.getCursor().getColumnIndex(TeamContract.TeamEntry.COLUMN_TEAM_NAME)));
-            values.put(TeamContract.GameEntry.COLUMN_TEAMB_SCORE, 0);
-            values.put(TeamContract.GameEntry.COLUMN_WINNER, 0);
-
-            Uri _id = getContext().getContentResolver().insert(TeamContract.GameEntry.CONTENT_URI, values);
-
-            Intent intent = new Intent(getActivity(),MainActivity.class);
-            startActivity(intent);*/
             return true;
         }
         return super.onOptionsItemSelected(item);

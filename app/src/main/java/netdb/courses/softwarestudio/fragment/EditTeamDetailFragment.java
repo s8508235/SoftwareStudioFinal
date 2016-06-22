@@ -63,15 +63,13 @@ public class EditTeamDetailFragment extends Fragment implements LoaderManager.Lo
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getActivity().setTitle("編輯隊伍");
+        getActivity().setTitle(R.string.edit_team);
 
         View rootView = inflater.inflate(R.layout.fragment_edit_team_detail, container, false);
         // The detail Activity called via intent.  Inspect the intent for forecast data.
-
         listView = (ListView) rootView.findViewById(R.id.edit_team_listView);
         adapter = new EditTeamDetailAdapter(getActivity(), null, 0);
         listView.setAdapter(adapter);
-
 
         return rootView;
     }

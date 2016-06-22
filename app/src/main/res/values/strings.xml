@@ -19,4 +19,11 @@
     <string name="plusColumn">+</string>
     <string name="remind_login">Please log in!</string>
     <string name="facebook_app_id">295899927420216</string>
+    <string name="not_enough_people_for_a_team">至少需要五名隊員</string>
+    <string name="already_had_the_same_name">此名稱以被使用</string>
+    <string name="set_team">建立隊伍</string>
+    <string name="edit_team">編輯隊伍</string>
+    <string name="update_team">修改隊伍</string>
+    <string name="success">成功</string>
+    <string name="team_name">隊伍名稱:</string>
 </resources>

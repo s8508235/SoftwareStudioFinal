@@ -35,12 +35,6 @@ public class TeamDBHelper extends SQLiteOpenHelper {
                 GameEntry.COLUMN_TEAMB_SCORE + " INTEGER NOT NULL, " +
                 GameEntry.COLUMN_WINNER + " INTEGER NOT NULL, " +
 
-                " FOREIGN KEY (" + GameEntry.COLUMN_TEAMA +   ") REFERENCES " +
-                TeamEntry.TABLE_NAME + " (" + TeamEntry._ID + "), " +
-
-                " FOREIGN KEY (" + GameEntry.COLUMN_TEAMB +  ") REFERENCES " +
-                TeamEntry.TABLE_NAME + " (" + TeamEntry._ID + "), " +
-
                 " UNIQUE (" + GameEntry.COLUMN_NAME + ") ON CONFLICT REPLACE);";
 
         final String SQL_CREATE_TEAM_TABLE = "CREATE TABLE " + TeamEntry.TABLE_NAME + " (" +
@@ -50,47 +44,47 @@ public class TeamDBHelper extends SQLiteOpenHelper {
 
                 " UNIQUE (" + TeamEntry.COLUMN_TEAM_NAME + ") ON CONFLICT REPLACE);";
 
+        final String SQL_CREATE_GAME_PLAYER_TABLE = "CREATE TABLE " + TeamContract.GamePlayerEntry.TABLE_NAME + " (" +
+                TeamContract.GamePlayerEntry._ID + " INTEGER PRIMARY KEY," +
+                TeamContract.GamePlayerEntry.COLUMN_GAME_ID + " INTEGER NOT NULL, " +
+                TeamContract.GamePlayerEntry.COLUMN_PLAYER_DATA_ID + " INTEGER NOT NULL, " +
+                TeamContract.GamePlayerEntry.COLUMN_PLAYER_NAME + " TEXT NOT NULL, " +
+                TeamContract.GamePlayerEntry.COLUMN_TEAM_NAME + " TEXT NOT NULL, " +
+                TeamContract.GamePlayerEntry.COLUMN_PLAYER_ID + " INTEGER NOT NULL);";
+
+        final String SQL_CREATE_GAME_DATA_TABLE = "CREATE TABLE " + TeamContract.GameDataEntry.TABLE_NAME + " (" +
+                TeamContract.GameDataEntry._ID + " INTEGER PRIMARY KEY," +
+                // the ID of the location entry associated with this weather data
+                TeamContract.GameDataEntry.COLUMN_AST + " INTEGER NOT NULL, " +
+                TeamContract.GameDataEntry.COLUMN_BLOCK + " INTEGER NOT NULL," +
+                TeamContract.GameDataEntry.COLUMN_DEF + " INTEGER NOT NULL," +
+                TeamContract.GameDataEntry.COLUMN_OFF + " INTEGER NOT NULL," +
+                TeamContract.GameDataEntry.COLUMN_STEAL + " INTEGER NOT NULL," +
+
+                TeamContract.GameDataEntry.COLUMN_SHOT + " INTEGER NOT NULL," +
+                TeamContract.GameDataEntry.COLUMN_TOTAL_SHOT + " INTEGER NOT NULL," +
+
+                TeamContract.GameDataEntry.COLUMN_THREE + " INTEGER NOT NULL," +
+                TeamContract.GameDataEntry.COLUMN_TOTAL_THREE + " INTEGER NOT NULL," +
+
+                TeamContract.GameDataEntry.COLUMN_TURNOVER + " INTEGER NOT NULL," +
+                TeamContract.GameDataEntry.COLUMN_FREE_THROW + " INTEGER NOT NULL," +
+                TeamContract.GameDataEntry.COLUMN_TOTAL_FREE_THROW + " INTEGER NOT NULL);";
 
         final String SQL_CREATE_PLAYER_TABLE = "CREATE TABLE " + PlayerEntry.TABLE_NAME + " (" +
-                // Why AutoIncrement here, and not above?
-                // Unique keys will be auto-generated in either case.  But for weather
-                // forecasting, it's reasonable to assume the user will want information
-                // for a certain date and all dates *following*, so the forecast data
-                // should be sorted accordingly.
+
                 PlayerEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
 
-                PlayerEntry.COLUMN_PLAYER_NAME + " TEXT UNIQUE NOT NULL, " +
-                PlayerEntry.COLUMN_PLAYER_NUMBER + " INTEGER NOT NULL, " +
+                PlayerEntry.COLUMN_PLAYER_NAME + " TEXT NOT NULL, " +
+                PlayerEntry.COLUMN_PLAYER_DATA_ID + " INTEGER NOT NULL, " +
                 PlayerEntry.COLUMN_PLAYER_ID + " INTEGER NOT NULL, " +
-                PlayerEntry.COLUMN_TEAM + " INTEGER NOT NULL, " +
-
-                PlayerEntry.COLUMN_GAME + " INTEGER NOT NULL, " +
-                // the ID of the location entry associated with this weather data
-                PlayerEntry.COLUMN_GAME_NUM + " INTEGER NOT NULL, " +
-                PlayerEntry.COLUMN_AST + " INTEGER NOT NULL, " +
-                PlayerEntry.COLUMN_BLOCK + " INTEGER NOT NULL," +
-                PlayerEntry.COLUMN_DEF + " INTEGER NOT NULL," +
-                PlayerEntry.COLUMN_OFF + " INTEGER NOT NULL," +
-                PlayerEntry.COLUMN_STEAL + " INTEGER NOT NULL," +
-
-                PlayerEntry.COLUMN_SHOT + " INTEGER NOT NULL," +
-                PlayerEntry.COLUMN_TOTAL_SHOT + " INTEGER NOT NULL," +
-
-                PlayerEntry.COLUMN_THREE + " INTEGER NOT NULL," +
-                PlayerEntry.COLUMN_TOTAL_THREE + " INTEGER NOT NULL," +
-
-                PlayerEntry.COLUMN_TURNOVER + " INTEGER NOT NULL," +
-                PlayerEntry.COLUMN_GAME_TIME + " REAL NOT NULL, " +
-
-                " FOREIGN KEY (" + PlayerEntry.COLUMN_GAME  + ") REFERENCES " +
-                GameEntry.TABLE_NAME + " (" + GameEntry._ID + ")," +
-
-                " FOREIGN KEY (" + PlayerEntry.COLUMN_TEAM  + ") REFERENCES " +
-                GameEntry.TABLE_NAME + " (" + TeamEntry._ID + "));";
+                PlayerEntry.COLUMN_TEAM_ID + " INTEGER NOT NULL);";
 
         sqLiteDatabase.execSQL(SQL_CREATE_TEAM_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_PLAYER_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_GAME_TABLE);
+        sqLiteDatabase.execSQL(SQL_CREATE_GAME_PLAYER_TABLE);
+        sqLiteDatabase.execSQL(SQL_CREATE_GAME_DATA_TABLE);
     }
 
     @Override
@@ -104,6 +98,8 @@ public class TeamDBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TeamEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + PlayerEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + GameEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TeamContract.GameDataEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TeamContract.GamePlayerEntry.TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
 }

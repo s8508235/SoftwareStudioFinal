@@ -29,6 +29,8 @@ public class TeamContract {
     public static final String PATH_TEAM = "team";
     public static final String PATH_PLAYER = "player";
     public static final String PATH_GAME = "game";
+    public static final String PATH_GAME_DATA = "game_data";
+    public static final String PATH_GAME_PLAYER = "game_player";
     // To make it easy to query for the exact date, we normalize all dates that go into
     // the database to the start of the the Julian day at UTC.
 
@@ -101,15 +103,36 @@ public class TeamContract {
         public static final String TABLE_NAME = "player";
 
         public static final String COLUMN_PLAYER_NAME = "name";
-        public static final String COLUMN_PLAYER_NUMBER = "player_number";
-        public static final String COLUMN_PLAYER_ID = "team_id";
-        public static final String COLUMN_TEAM = "team";
+        public static final String COLUMN_PLAYER_ID = "player_id";
+        public static final String COLUMN_TEAM_ID = "team_id";
+        public static final String COLUMN_PLAYER_DATA_ID = "player_data_id";
 
-        public static final String COLUMN_GAME = "game";
+        public static Uri buildPlayerUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
 
-        public static final String COLUMN_GAME_NUM = "total_game";
+        public static String getTeamSettingFromUri(Uri uri) {
+            return uri.getPathSegments().get(1);
+        }
+
+        public static long getNumberFromUri(Uri uri) {
+            return Long.parseLong(uri.getPathSegments().get(2));
+        }
+
+    }
+    public static final class GameDataEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_GAME_DATA).build();
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_GAME_DATA;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_GAME_DATA;
+
+        public static final String TABLE_NAME = "game_data";
+
         // Column with the foreign key into the location table.
-        public static final String COLUMN_GAME_TIME = "time";
         // Date, stored as long in milliseconds since the epoch
         public static final String COLUMN_STEAL = "steal";
         // Weather id as returned by API, to identify the icon to be used
@@ -129,8 +152,10 @@ public class TeamContract {
         public static final String COLUMN_DEF = "def_rebound";
 
         public static final String COLUMN_TURNOVER = "turnover";
+        public static final String COLUMN_FREE_THROW = "free_throw";
+        public static final String COLUMN_TOTAL_FREE_THROW = "total_free_throw";
 
-        public static Uri buildPlayerUri(long id) {
+        public static Uri buildGameDataUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
@@ -142,5 +167,35 @@ public class TeamContract {
             return Long.parseLong(uri.getPathSegments().get(2));
         }
 
+    }
+
+    public static final class GamePlayerEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_GAME_PLAYER).build();
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_GAME_PLAYER;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_GAME_PLAYER;
+
+        // Table name
+        public static final String TABLE_NAME = "game_player";
+
+        // Human readable location string, provided by the API.  Because for styling,
+        // "Mountain View" is more recognizable than 94043.
+        public static final String COLUMN_TEAM_NAME = "team_name";
+        public static final String COLUMN_PLAYER_NAME = "name";
+        public static final String COLUMN_PLAYER_ID = "player_id";
+        public static final String COLUMN_GAME_ID = "game_id";
+        public static final String COLUMN_PLAYER_DATA_ID = "player_data_id";
+
+        public static Uri buildGamePlayerUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        public static String getTeamSettingFromUri(Uri uri){
+            return uri.getPathSegments().get(1);
+        }
     }
 }

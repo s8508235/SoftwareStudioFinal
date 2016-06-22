@@ -3,9 +3,9 @@ apply plugin: 'com.android.application'
 android {
     Properties properties = new Properties()
     properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
+    def localBuildToolsVersion = properties.getProperty('buildToolsVersion')
     compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    buildToolsVersion localBuildToolsVersion
     defaultConfig {
         applicationId "netdb.courses.softwarestudio"
         minSdkVersion 21

@@ -7,7 +7,9 @@
         android:id="@+id/update_game_textView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:textColor="#FF0000"
+        android:layout_gravity="center_vertical"
+        android:textColor="@color/colorAccent"
+        android:textSize="40dp"
         />
 
 </FrameLayout>

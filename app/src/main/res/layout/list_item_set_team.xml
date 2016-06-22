@@ -7,11 +7,32 @@
         android:id="@+id/set_team_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:textColor="#FF0000"/>
-    <EditText
-        android:id="@+id/set_team_editText"
+
+    <LinearLayout
         android:layout_width="match_parent"
+        android:orientation="horizontal"
         android:layout_height="wrap_content"
-        android:textColor="#000000">
-    </EditText>>
+        android:weightSum="2">
+
+        <EditText
+            android:id="@+id/set_team_editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1">
+        </EditText>>
+
+        <EditText
+            android:id="@+id/set_team_numberText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:textColor="#000000">
+        </EditText>>
+
+    </LinearLayout>L>
 </LinearLayout>
