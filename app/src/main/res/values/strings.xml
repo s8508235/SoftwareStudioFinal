@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">FinalProject</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_teams">Teams</string>
+    <string name="title_activity_detail">Details</string>
+    <string name="title_activity_solo">Solo</string>
+    <string name="title_activity_update_game">Update Game</string>
+    <string name="title_activity_game_data">Game Data</string>
+    <string name="title_activity_update_team">Update Team</string>
+    <string name="action_settings">Settings</string>
+    <string name="pref_mode_key" translatable="false">mode</string>
+    <string name="pref_mode_label">Mode</string>
+    <string name="pref_mode_team" translatable="false">team</string>
+    <string name="pref_mode_solo" translatable="false">solo</string>
+    <string name="pref_mode_label_team">Team</string>
+    <string name="pref_mode_label_solo">Solo</string>
+    <string name="list_team">Team</string>
+    <string name="submit">送出</string>
+    <string name="plusColumn">+</string>
+    <string name="remind_login">Please log in!</string>
+    <string name="facebook_app_id">295899927420216</string>
+
+    <string name="not_enough_people_for_a_team">至少需要五名隊員</string>
+    <string name="already_had_the_same_name">此名稱以被使用</string>
+    <string name="set_team">建立隊伍</string>
+    <string name="edit_team">編輯隊伍</string>
+    <string name="update_team">修改隊伍</string>
+    <string name="success">成功</string>
+    <string name="team_name">隊伍名稱:</string>
+    <string name="google_map_api_id">AIzaSyBgKi5KGolvBgoJQdwyZjfnpwiS_xAEvQo</string>
+    <string name="google_map_web_api_id">AIzaSyDp5GC80emtraC7Dm1j43wdGXbFJ9GXkAg</string>
+    <string name="location_permission_denied">This sample requires location permission to enable the \'my location\' layer. Please try again and grant access to use the location.\nIf the permission has been permanently denied, it can be enabled from the System Settings &gt; Apps &gt; \'Google Maps API Demos\'.</string>
+    <string name="permission_required_toast">Location permission is required for this demo.</string>
+    <string name="permission_rationale_location">Access to the location service is required to demonstrate the \'my location\' feature, which shows your current location on the map.</string>
+    <string name="search_settings">Search Places</string>
+
+
+
+</resources>
